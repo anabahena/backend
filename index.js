@@ -1,11 +1,37 @@
-const express = require("express");
+import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import http from "http";
+import express from "express";
+import cors from "cors";
+
+const typeDefs = gql`
+  type Query {
+    hello: String
+  }
+`;
+
+const resolvers = {
+  Query: {
+    hello: () => "world",
+  },
+};
 
 const app = express();
+app.use(cors());
+app.use(express.json());
+const httpServer = http.createServer(app);
 
-app.listen(process.env.PORT || 3000);
+const startApolloServer = async (app, httpServer) => {
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
 
-app.get("/", (req, res)=> {
-    res.send('Home')
-});
+  await server.start();
+  server.applyMiddleware({ app });
+};
 
-console.log("Server port", process.env.PORT || 3000);
+startApolloServer(app, httpServer);
+
+export default httpServer;
