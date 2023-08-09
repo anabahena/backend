@@ -4,4 +4,8 @@ const app = express();
 
 app.listen(process.env.PORT || 3000);
 
+app.get("/", (req, res)=> {
+    res.send('Home')
+});
+
 console.log("Server port", process.env.PORT || 3000);
