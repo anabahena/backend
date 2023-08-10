@@ -69,7 +69,7 @@ async function startApolloServer() {
 
   // Mount Apollo middleware here.
   server.applyMiddleware({ app });
-  await new Promise((resolve) => httpServer.listen({ port: process.env.PORT || 4000 }, resolve));
+  await new Promise((resolve) => httpServer.listen({ port: process.env.PORT || 4000 }, resolve)).then(()=> console.log('good')).catch((err)=> console.log('err', err));
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
   return { server, app };
 }
