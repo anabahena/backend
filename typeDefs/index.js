@@ -1,6 +1,25 @@
-const path = require('path'),
-    { fileLoader, mergeTypes } = require('merge-graphql-schemas');
+const { gql } = require('apollo-server');
 
-const typesArray = fileLoader(path.join(__dirname, "./"));
+const typeDefs = gql`
+  type Task {
+    id: Int!
+    name: String!
+    description: String!
+    completed: Boolean!
+  }
 
-module.exports = mergeTypes(typesArray);
+  type Query {
+    tasks: [Task]!
+    task(id: Int!): Task
+  }
+
+  type Mutation {
+    addTask(
+      name: String!,
+      description: String!,
+      completed: Boolean!
+    ): Task!
+  }
+`;
+
+module.exports = typeDefs;
