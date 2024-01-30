@@ -6,6 +6,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   playground: true,
+  cache: "bounded",
 });
 
 server.listen().then(() => {
